@@ -1,5 +1,11 @@
 """
 Core log analysis engine for LogSentry
+
+Created by Anthony Frederick, 2025
+This module contains the main analysis engine that orchestrates log parsing,
+threat detection, IP analysis, and result generation. It provides the primary
+interface for analyzing individual files, directories, and text data for
+security threats and generates comprehensive analysis reports.
 """
 
 import os
@@ -20,41 +26,119 @@ from .utils import (
 
 @dataclass
 class AnalysisResult:
-    file_path: str
-    total_lines: int
-    parsed_lines: int
-    detections: List[Detection]
-    summary: Dict[str, Any]
-    analysis_time: float
-    log_types: Dict[str, int]
-    ip_analysis: Dict[str, Any]
-    timeline: List[Dict[str, Any]]
+    """
+    Comprehensive result data structure for log analysis operations
+    
+    Contains all analysis results including detections, statistics, timelines,
+    and metadata for a single log analysis operation. This is the primary
+    output format returned by LogSentry's analysis functions.
+    
+    Attributes:
+        file_path (str): Path to the analyzed log file or source identifier
+        total_lines (int): Total number of lines processed
+        parsed_lines (int): Number of lines successfully parsed
+        detections (List[Detection]): All security threats detected
+        summary (Dict[str, Any]): Summary statistics and aggregated data
+        analysis_time (float): Time taken to complete analysis (seconds)
+        log_types (Dict[str, int]): Count of entries by log format type
+        ip_analysis (Dict[str, Any]): IP address analysis results
+        timeline (List[Dict[str, Any]]): Chronological timeline of events
+    """
+    file_path: str                              # Source file path or identifier
+    total_lines: int                            # Total lines processed
+    parsed_lines: int                           # Successfully parsed lines
+    detections: List[Detection]                 # All detected security threats
+    summary: Dict[str, Any]                     # Analysis summary statistics
+    analysis_time: float                        # Processing time in seconds
+    log_types: Dict[str, int]                   # Log format distribution
+    ip_analysis: Dict[str, Any]                 # IP address analysis results
+    timeline: List[Dict[str, Any]]              # Event timeline data
 
 
 @dataclass
 class IPAnalysis:
-    ip: str
-    count: int
-    is_private: bool
-    first_seen: Optional[datetime]
-    last_seen: Optional[datetime]
-    detections: List[Detection]
-    geolocation: Dict[str, Any]
+    """
+    Data structure for individual IP address analysis results
+    
+    Contains comprehensive information about a specific IP address found
+    in the log data, including activity patterns, threat associations,
+    and geolocation information.
+    
+    Attributes:
+        ip (str): The IP address being analyzed
+        count (int): Number of times this IP appears in logs
+        is_private (bool): Whether IP is in private address space
+        first_seen (Optional[datetime]): First occurrence timestamp
+        last_seen (Optional[datetime]): Last occurrence timestamp
+        detections (List[Detection]): Security threats associated with this IP
+        geolocation (Dict[str, Any]): Geographic and network information
+    """
+    ip: str                                     # IP address string
+    count: int                                  # Frequency count in logs
+    is_private: bool                            # Private vs public IP flag
+    first_seen: Optional[datetime]              # First seen timestamp
+    last_seen: Optional[datetime]               # Last seen timestamp
+    detections: List[Detection]                 # Associated threat detections
+    geolocation: Dict[str, Any]                 # Geographic/network metadata
 
 
 class LogAnalyzer:
-    """Main log analysis engine"""
+    """
+    Main log analysis engine that orchestrates the complete analysis process
+    
+    This is the central component of LogSentry that coordinates log parsing,
+    threat detection, IP analysis, and result generation. It supports analysis
+    of individual files, directories, compressed files, and raw text data.
+    
+    Key Features:
+    - Multi-format log parsing (Apache, syslog, JSON, etc.)
+    - Real-time threat detection using security rules
+    - IP address analysis and geolocation
+    - Performance optimization with chunk-based processing
+    - Comprehensive reporting and export capabilities
+    - Support for custom security rules
+    
+    Performance Characteristics:
+    - Memory efficient: Processes large files in configurable chunks
+    - Fast: Compiled regex patterns for efficient threat detection
+    - Scalable: Handles multiple files and directory scanning
+    """
     
     def __init__(self, custom_rules: Optional[List] = None):
-        self.parser_manager = LogParserManager()
-        self.rule_engine = RuleEngine()
-        self.chunk_size = 10000  # Process logs in chunks
+        """
+        Initialize the LogAnalyzer with parsers, rules, and configuration
         
-        # Add custom rules if provided
+        Sets up the complete analysis pipeline including log parsers for
+        different formats, security detection rules, and performance settings.
+        Optionally accepts custom rules to extend the built-in detection
+        capabilities.
+        
+        Args:
+            custom_rules (Optional[List]): List of custom DetectionRule objects
+                                          to add to the built-in rule set
+        
+        Example:
+            >>> analyzer = LogAnalyzer()  # Use built-in rules only
+            >>> 
+            >>> # Or with custom rules
+            >>> custom_rule = DetectionRule(name="my_rule", ...)
+            >>> analyzer = LogAnalyzer(custom_rules=[custom_rule])
+        """
+        # Initialize log format parsers (Apache, syslog, JSON, etc.)
+        self.parser_manager = LogParserManager()
+        
+        # Initialize security detection rule engine
+        self.rule_engine = RuleEngine()
+        
+        # Performance tuning: process logs in chunks to manage memory usage
+        # Larger chunks = faster processing but more memory usage
+        self.chunk_size = 10000  # Process 10,000 lines at a time
+        
+        # Add custom security rules if provided by user
         if custom_rules:
             for rule in custom_rules:
                 self.rule_engine.rules.add_custom_rule(rule)
-            # Recompile patterns after adding custom rules
+            # Recompile regex patterns after adding custom rules for performance
             self.rule_engine._compile_patterns()
     
     def analyze_file(self, file_path: str, max_lines: Optional[int] = None) -> AnalysisResult:

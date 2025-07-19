@@ -1,5 +1,10 @@
 """
 Test cases for LogSentry analyzer
+
+Created by Anthony Frederick, 2025
+Comprehensive test suite for validating LogSentry's core analysis functionality,
+including threat detection, log parsing, IP analysis, and export capabilities.
+Tests cover both individual components and integrated workflows.
 """
 
 import pytest

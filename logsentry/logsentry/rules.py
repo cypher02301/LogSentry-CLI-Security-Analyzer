@@ -1,5 +1,10 @@
 """
 Security detection rules for LogSentry
+
+Created by Anthony Frederick, 2025
+This module defines the security detection rules engine that powers LogSentry's
+threat detection capabilities. It includes rule definitions, severity levels,
+detection logic, and analysis engines for identifying security threats in log data.
 """
 
 import re
@@ -9,44 +14,124 @@ from enum import Enum
 
 
 class Severity(Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
+    """
+    Enumeration of threat severity levels used throughout LogSentry
+    
+    These levels help prioritize security incidents and determine response urgency:
+    - LOW: Informational events, potential reconnaissance
+    - MEDIUM: Suspicious activity requiring monitoring
+    - HIGH: Likely security incidents requiring investigation
+    - CRITICAL: Active attacks requiring immediate response
+    """
+    LOW = "low"           # Informational/reconnaissance activity
+    MEDIUM = "medium"     # Suspicious activity worth monitoring
+    HIGH = "high"         # Likely security incident
+    CRITICAL = "critical" # Active attack requiring immediate response
 
 
 @dataclass
 class DetectionRule:
-    name: str
-    description: str
-    severity: Severity
-    pattern: str
-    category: str
-    tags: List[str]
-    regex_flags: int = re.IGNORECASE
+    """
+    Data class representing a single security detection rule
+    
+    Each rule defines a pattern to match against log entries, along with
+    metadata about the threat type, severity, and categorization. Rules
+    are compiled into regex patterns for efficient matching.
+    
+    Attributes:
+        name (str): Unique identifier for the rule
+        description (str): Human-readable description of what the rule detects
+        severity (Severity): Threat severity level (LOW, MEDIUM, HIGH, CRITICAL)
+        pattern (str): Regex pattern to match against log entries
+        category (str): Threat category (e.g., 'web_attack', 'authentication')
+        tags (List[str]): List of tags for classification and filtering
+        regex_flags (int): Regex compilation flags (default: re.IGNORECASE)
+    """
+    name: str                                    # Unique rule identifier
+    description: str                             # Human-readable description
+    severity: Severity                           # Threat severity level
+    pattern: str                                 # Regex pattern for matching
+    category: str                                # Threat category
+    tags: List[str]                             # Classification tags
+    regex_flags: int = re.IGNORECASE            # Regex compilation flags
 
 
 @dataclass
 class Detection:
-    rule_name: str
-    severity: Severity
-    description: str
-    matched_text: str
-    line_number: int
-    timestamp: Optional[str]
-    category: str
-    tags: List[str]
-    confidence: float = 1.0
+    """
+    Data class representing a security threat detection instance
+    
+    Created when a rule matches against a log entry. Contains all relevant
+    information about the detected threat including context, confidence,
+    and metadata for analysis and reporting.
+    
+    Attributes:
+        rule_name (str): Name of the rule that triggered
+        severity (Severity): Severity level of the detected threat
+        description (str): Description of the threat
+        matched_text (str): Text that matched the rule pattern
+        line_number (int): Line number where threat was detected
+        timestamp (Optional[str]): Timestamp of the log entry
+        category (str): Threat category
+        tags (List[str]): Rule tags for classification
+        confidence (float): Confidence score (0.0-1.0) of the detection
+    """
+    rule_name: str                               # Name of triggered rule
+    severity: Severity                           # Threat severity level
+    description: str                             # Threat description
+    matched_text: str                            # Matching text portion
+    line_number: int                             # Line number in log file
+    timestamp: Optional[str]                     # Log entry timestamp
+    category: str                                # Threat category
+    tags: List[str]                             # Classification tags
+    confidence: float = 1.0                     # Detection confidence (0.0-1.0)
 
 
 class SecurityRules:
-    """Collection of security detection rules"""
+    """
+    Collection and management of security detection rules
+    
+    This class maintains the complete set of detection rules used by LogSentry
+    to identify security threats. It includes built-in rules for common attack
+    patterns and provides methods to add custom rules, filter rules, and
+    manage the rule set.
+    
+    The built-in rules cover major threat categories:
+    - Web attacks (SQL injection, XSS, directory traversal)
+    - Authentication attacks (brute force, credential stuffing)
+    - Network attacks (port scans, suspicious user agents)
+    - System attacks (privilege escalation, file access)
+    - Malware and data exfiltration
+    """
     
     def __init__(self):
+        """
+        Initialize the SecurityRules with default built-in detection rules
+        
+        Loads and configures all the standard security detection rules that
+        ship with LogSentry. These rules cover the most common attack patterns
+        and security threats found in typical enterprise environments.
+        """
         self.rules = self._initialize_rules()
     
     def _initialize_rules(self) -> List[DetectionRule]:
-        """Initialize default security rules"""
+        """
+        Initialize and return the complete set of built-in security detection rules
+        
+        This method defines all the default rules that LogSentry uses to detect
+        security threats. Rules are organized by category and cover various
+        attack vectors and threat types commonly seen in log data.
+        
+        Returns:
+            List[DetectionRule]: Complete list of initialized detection rules
+            
+        Rule Categories:
+            - Authentication: Failed logins, brute force, credential stuffing
+            - Web Attacks: SQL injection, XSS, directory traversal, command injection
+            - Network: Port scanning, suspicious user agents, DNS tunneling
+            - System: Privilege escalation, file access, reverse shells
+            - Data Exfiltration: Large transfers, suspicious downloads
+        """
         return [
             # Authentication attacks
             DetectionRule(

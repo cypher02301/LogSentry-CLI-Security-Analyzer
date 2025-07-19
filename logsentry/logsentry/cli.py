@@ -1,5 +1,11 @@
 """
 Command-line interface for LogSentry
+
+Created by Anthony Frederick, 2025
+This module provides the complete command-line interface for LogSentry,
+including all user-facing commands, output formatting, and interactive
+features. Built with Click for robust argument parsing and Rich for
+beautiful terminal output with colors, tables, and progress indicators.
 """
 
 import click
@@ -20,16 +26,36 @@ from .analyzer import LogAnalyzer, AnalysisResult, merge_analysis_results
 from .rules import Severity, SecurityRules
 from .utils import format_bytes
 
-
+# Initialize Rich console for beautiful terminal output
+# Handles colors, formatting, tables, and progress indicators
 console = Console()
 
 
 @click.group()
 @click.version_option(version="1.0.0")
 def cli():
-    """LogSentry - A CLI Security Log Analyzer
+    """
+    LogSentry - A CLI Security Log Analyzer
     
-    Analyze log files for security threats and suspicious activities.
+    Created by Anthony Frederick, 2025
+    
+    A comprehensive Python-based tool for analyzing log files and detecting
+    security incidents across multiple log formats. LogSentry provides advanced
+    threat detection, IP analysis, and beautiful reporting capabilities.
+    
+    Key Features:
+    ✓ Multi-format log parsing (Apache, syslog, JSON, etc.)
+    ✓ 20+ built-in security detection rules
+    ✓ IP geolocation and suspicious activity detection
+    ✓ Risk scoring and confidence analysis
+    ✓ Beautiful terminal output with progress indicators
+    ✓ Export to JSON and CSV formats
+    ✓ Directory scanning and batch processing
+    
+    Examples:
+        logsentry analyze access.log --verbose
+        logsentry scan /var/log --pattern "*.log"
+        logsentry list-rules
     """
     pass
 

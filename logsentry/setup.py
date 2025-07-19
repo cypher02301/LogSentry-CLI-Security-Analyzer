@@ -1,5 +1,9 @@
 """
 Setup script for LogSentry CLI Security Analyzer
+
+Created by Anthony Frederick, 2025
+Package configuration and installation script for LogSentry, a comprehensive
+Python-based log analysis tool for detecting security incidents and threats.
 """
 
 from setuptools import setup, find_packages
@@ -7,14 +11,15 @@ import os
 
 # Read the README file for long description
 def read_file(filename):
+    """Read file contents for use as long description"""
     with open(os.path.join(os.path.dirname(__file__), filename), encoding='utf-8') as f:
         return f.read()
 
 setup(
     name="logsentry",
     version="1.0.0",
-    author="LogSentry Team",
-    author_email="contact@logsentry.dev",
+    author="Anthony Frederick",
+    author_email="anthony.frederick@logsentry.dev",
     description="A Python-based log analysis tool for detecting security incidents",
     long_description=read_file('README.md') if os.path.exists('README.md') else '',
     long_description_content_type="text/markdown",

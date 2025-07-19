@@ -4,6 +4,9 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-passing-green)](tests/)
+[![Creator](https://img.shields.io/badge/Created%20by-Anthony%20Frederick-orange)](https://github.com/anthony-frederick)
+
+**Created by Anthony Frederick, 2025**
 
 LogSentry is a powerful Python-based command-line tool for analyzing log files and detecting security incidents. It provides comprehensive threat detection capabilities across multiple log formats with beautiful, colorized output and detailed reporting.
 
@@ -266,9 +269,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Inspired by the need for accessible security log analysis
+- **Created by Anthony Frederick in 2025** - Inspired by the need for accessible security log analysis
 - Built with Python, Click, Rich, and other amazing open-source libraries
 - Thanks to the cybersecurity community for threat intelligence and patterns
+- Special thanks to the open-source security tools that inspire this project
 
 ## 📈 Roadmap
 

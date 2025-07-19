@@ -1,5 +1,19 @@
 """
 Log format parsers for different log types
+
+Created by Anthony Frederick, 2025
+This module provides a comprehensive set of log parsers that can automatically
+detect and parse various log formats commonly found in enterprise environments.
+Each parser is specialized for a specific log format and extracts structured
+data including timestamps, IP addresses, and relevant fields for security analysis.
+
+Supported Log Formats:
+- Apache/Nginx access logs (Common and Combined Log Format)
+- Syslog (RFC3164 format)
+- Windows Event Logs
+- Firewall logs (iptables, pfSense, etc.)
+- JSON structured logs
+- Generic unstructured logs (fallback parser)
 """
 
 import re
@@ -12,29 +26,87 @@ from .utils import normalize_timestamp, extract_ips_from_text, clean_log_line
 
 @dataclass
 class LogEntry:
-    raw_line: str
-    timestamp: Optional[datetime]
-    source_ip: Optional[str]
-    message: str
-    fields: Dict[str, Any]
-    log_type: str
-    line_number: int = 0
+    """
+    Structured representation of a parsed log entry
+    
+    This data class contains all the extracted information from a single log line
+    after it has been processed by an appropriate parser. It provides a normalized
+    format that the analysis engine can work with regardless of the original log format.
+    
+    Attributes:
+        raw_line (str): Original unmodified log line
+        timestamp (Optional[datetime]): Parsed timestamp or None if not available
+        source_ip (Optional[str]): Source IP address if found in the log
+        message (str): Main log message content
+        fields (Dict[str, Any]): Additional structured fields extracted from log
+        log_type (str): Identifier of the parser that processed this entry
+        line_number (int): Line number in the original log file (1-based)
+    """
+    raw_line: str                               # Original log line text
+    timestamp: Optional[datetime]               # Parsed timestamp
+    source_ip: Optional[str]                    # Source IP address
+    message: str                                # Main message content
+    fields: Dict[str, Any]                      # Additional extracted fields
+    log_type: str                               # Parser type identifier
+    line_number: int = 0                        # Line number in file
 
 
 class LogParser(ABC):
-    """Abstract base class for log parsers"""
+    """
+    Abstract base class for all log format parsers
+    
+    Defines the interface that all concrete log parsers must implement.
+    Each parser is responsible for:
+    1. Detecting if it can handle a specific log format
+    2. Extracting structured data from log lines
+    3. Normalizing timestamps and IP addresses
+    4. Providing consistent output format
+    
+    The parser system uses a chain-of-responsibility pattern where each
+    parser is tried in order until one successfully matches the log format.
+    """
     
     def __init__(self, name: str):
+        """
+        Initialize the parser with a unique name identifier
+        
+        Args:
+            name (str): Unique name for this parser (e.g., 'apache_access', 'syslog')
+        """
         self.name = name
     
     @abstractmethod
     def can_parse(self, line: str) -> bool:
-        """Check if this parser can handle the given log line"""
+        """
+        Determine if this parser can handle the given log line format
+        
+        This method should quickly analyze the log line structure to determine
+        if it matches the expected format for this parser. Should be fast as
+        it's called for every log line during format detection.
+        
+        Args:
+            line (str): Log line to analyze
+            
+        Returns:
+            bool: True if this parser can handle the log format, False otherwise
+        """
         pass
     
     @abstractmethod
     def parse(self, line: str, line_number: int = 0) -> Optional[LogEntry]:
-        """Parse a log line into a LogEntry"""
+        """
+        Parse a log line into a structured LogEntry object
+        
+        Extracts all available structured information from the log line including
+        timestamp, IP addresses, message content, and format-specific fields.
+        
+        Args:
+            line (str): Log line to parse
+            line_number (int): Line number in the source file (for tracking)
+            
+        Returns:
+            Optional[LogEntry]: Parsed log entry or None if parsing fails
+        """
         pass
 
 
