@@ -38,9 +38,17 @@ def check_dependencies():
     
     missing_packages = []
     
+    # Map package names to import names
+    package_map = {
+        'pyinstaller': 'PyInstaller',
+        'python-dateutil': 'dateutil',
+        'pyyaml': 'yaml'
+    }
+    
     for package in required_packages:
+        import_name = package_map.get(package, package.replace('-', '_'))
         try:
-            __import__(package.replace('-', '_'))
+            __import__(import_name)
             print(f"   ✅ {package}")
         except ImportError:
             missing_packages.append(package)
@@ -104,15 +112,24 @@ def build_executable(spec_file, executable_name):
         if result.returncode == 0:
             print(f"   ✅ {executable_name} built successfully in {build_time:.1f}s")
             
-            # Check if executable exists
-            exe_path = Path('dist') / f"{executable_name}.exe"
-            if exe_path.exists():
+            # Check if executable exists (Linux has no extension, Windows has .exe)
+            exe_extensions = ['', '.exe']
+            exe_path = None
+            
+            for ext in exe_extensions:
+                potential_path = Path('dist') / f"{executable_name}{ext}"
+                if potential_path.exists():
+                    exe_path = potential_path
+                    break
+            
+            if exe_path:
                 size_mb = exe_path.stat().st_size / (1024 * 1024)
                 print(f"   📦 Executable size: {size_mb:.1f} MB")
                 print(f"   📁 Location: {exe_path.absolute()}")
                 return True
             else:
-                print(f"   ❌ Executable not found at {exe_path}")
+                print(f"   ❌ Executable not found in dist/ directory")
+                print(f"      Looking for: {executable_name} or {executable_name}.exe")
                 return False
         else:
             print(f"   ❌ Build failed for {executable_name}")

@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 # Get the current directory
-current_dir = Path(__file__).parent.absolute()
+current_dir = Path.cwd().absolute()
 
 # Define the analysis
 a = Analysis(
@@ -25,8 +25,6 @@ a = Analysis(
         ('frontend/static', 'frontend/static'),
         # Include documentation
         ('*.md', '.'),
-        # Include any sample data files
-        ('tests/test_data', 'tests/test_data'),
     ],
     hiddenimports=[
         # Ensure all LogSentry modules are included

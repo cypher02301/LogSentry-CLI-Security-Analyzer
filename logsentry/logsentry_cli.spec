@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 # Get the current directory
-current_dir = Path(__file__).parent.absolute()
+current_dir = Path.cwd().absolute()
 
 # Define the analysis
 a = Analysis(

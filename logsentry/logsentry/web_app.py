@@ -8,6 +8,7 @@ and security monitoring with real-time results and beautiful visualizations.
 """
 
 import os
+import sys
 import json
 import tempfile
 from datetime import datetime
@@ -21,14 +22,73 @@ from .analyzer import LogAnalyzer, AnalysisResult
 from .rules import SecurityRules, Severity
 from .parsers import LogParserManager
 
-# Initialize Flask application
+
+def get_resource_path(relative_path: str) -> str:
+    """
+    Get absolute path to resource, works for dev and for PyInstaller
+    
+    Args:
+        relative_path: Path relative to the application
+        
+    Returns:
+        Absolute path to the resource
+    """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except AttributeError:
+        # Normal Python execution
+        base_path = os.path.abspath(os.path.dirname(__file__))
+    
+    return os.path.join(base_path, relative_path)
+
+
+def get_template_folder() -> str:
+    """Get the correct template folder path for both dev and executable."""
+    try:
+        # When running as PyInstaller executable
+        base_path = sys._MEIPASS
+        return os.path.join(base_path, 'frontend', 'templates')
+    except AttributeError:
+        # When running from source
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(current_dir, '..', 'frontend', 'templates')
+
+
+def get_static_folder() -> str:
+    """Get the correct static folder path for both dev and executable."""
+    try:
+        # When running as PyInstaller executable
+        base_path = sys._MEIPASS
+        return os.path.join(base_path, 'frontend', 'static')
+    except AttributeError:
+        # When running from source
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(current_dir, '..', 'frontend', 'static')
+
+
+# Initialize Flask application with correct paths
+template_folder = get_template_folder()
+static_folder = get_static_folder()
+
 app = Flask(__name__, 
-           template_folder='../frontend/templates',
-           static_folder='../frontend/static')
+           template_folder=template_folder,
+           static_folder=static_folder)
 app.secret_key = 'logsentry_2025_anthony_frederick'  # Change in production
 
 # Configuration
-UPLOAD_FOLDER = '../frontend/static/uploads'
+def get_upload_folder() -> str:
+    """Get the correct upload folder path for both dev and executable."""
+    try:
+        # When running as PyInstaller executable, use temp directory
+        return tempfile.mkdtemp(prefix='logsentry_uploads_')
+    except:
+        # When running from source
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        upload_path = os.path.join(current_dir, '..', 'frontend', 'static', 'uploads')
+        return upload_path
+
+UPLOAD_FOLDER = get_upload_folder()
 ALLOWED_EXTENSIONS = {'log', 'txt', 'csv', 'json', 'gz'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
 
@@ -41,6 +101,31 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Global analyzer instance
 analyzer = LogAnalyzer()
 security_rules = SecurityRules()
+
+# Debug: Print paths for troubleshooting
+print(f"🔧 Flask Configuration:")
+print(f"   Template folder: {template_folder}")
+print(f"   Static folder: {static_folder}")
+print(f"   Upload folder: {UPLOAD_FOLDER}")
+print(f"   Template folder exists: {os.path.exists(template_folder)}")
+print(f"   Static folder exists: {os.path.exists(static_folder)}")
+
+# List template files if directory exists
+if os.path.exists(template_folder):
+    template_files = os.listdir(template_folder)
+    print(f"   Template files: {template_files}")
+else:
+    print(f"   ❌ Template folder does not exist!")
+
+# List static files if directory exists
+if os.path.exists(static_folder):
+    try:
+        static_files = os.listdir(static_folder)
+        print(f"   Static files: {static_files}")
+    except:
+        print(f"   ❌ Could not list static folder contents!")
+else:
+    print(f"   ❌ Static folder does not exist!")
 
 
 def allowed_file(filename: str) -> bool:
