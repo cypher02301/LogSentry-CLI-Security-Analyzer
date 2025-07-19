@@ -24,6 +24,20 @@ LogSentry is a powerful Python-based command-line tool for analyzing log files a
 
 ## 📦 Installation
 
+### 🚨 **Quick Fix for setuptools Error**
+
+If you get `ModuleNotFoundError: No module named 'setuptools'`, run this:
+
+```bash
+# Quick fix script
+python3 quick_start.py
+
+# Or manual fix
+pip install --break-system-packages setuptools wheel
+# OR
+pip install --user setuptools wheel
+```
+
 ### From PyPI (Recommended)
 ```bash
 pip install logsentry
@@ -31,16 +45,36 @@ pip install logsentry
 
 ### From Source
 ```bash
-git clone https://github.com/logsentry/logsentry.git
+git clone https://github.com/anthony-frederick/logsentry.git
 cd logsentry
 pip install -e .
 ```
 
 ### Development Installation
 ```bash
-git clone https://github.com/logsentry/logsentry.git
+git clone https://github.com/anthony-frederick/logsentry.git
 cd logsentry
 pip install -e ".[dev]"
+```
+
+### Alternative Installation Methods
+
+**For Wing IDE / IDE Users:**
+```bash
+# Use the automated installer
+python3 install_logsentry.py
+
+# Or run directly without installation
+python3 -m logsentry.cli --help
+```
+
+**For Virtual Environments:**
+```bash
+python -m venv logsentry_env
+source logsentry_env/bin/activate  # Linux/Mac
+# or logsentry_env\Scripts\activate  # Windows
+pip install setuptools wheel
+pip install -e .
 ```
 
 ## 🎯 Quick Start
