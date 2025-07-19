@@ -1,0 +1,1 @@
+# LogSentry-CLI-Security-Analyzer
