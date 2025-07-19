@@ -53,18 +53,28 @@ pip install --user setuptools wheel
 pip install logsentry
 ```
 
-### From Source
+### From Source (Modern Method)
 ```bash
 git clone https://github.com/anthony-frederick/logsentry.git
 cd logsentry
-pip install -e .
+pip install -e .[dev]
 ```
 
-### Development Installation
+### Legacy Installation (Deprecated)
+If you see deprecation warnings about `setup.py develop`, use the modern method above or see [SETUP_MIGRATION.md](SETUP_MIGRATION.md) for migration guide.
+
+### Development Installation (Full Setup)
 ```bash
 git clone https://github.com/anthony-frederick/logsentry.git
 cd logsentry
-pip install -e ".[dev]"
+
+# Install with all features (dev tools, web interface, build tools)
+pip install -e .[dev,web,build]
+
+# Or install specific feature groups:
+pip install -e .[dev]    # Development tools only
+pip install -e .[web]    # Web interface dependencies
+pip install -e .[build]  # Executable building tools
 ```
 
 ### Alternative Installation Methods
