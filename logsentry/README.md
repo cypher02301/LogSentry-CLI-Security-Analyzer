@@ -12,6 +12,16 @@ LogSentry is a powerful Python-based command-line tool for analyzing log files a
 
 ## 🚀 Features
 
+### 🌐 **Modern Web Interface**
+- **Drag & Drop Upload**: Easy file upload with progress indicators
+- **Real-time Analysis**: Live threat detection with interactive feedback
+- **Interactive Charts**: Beautiful visualizations with Chart.js (pie charts, bar charts)
+- **Export Capabilities**: Download results in JSON/CSV formats
+- **Mobile Responsive**: Works perfectly on desktop, tablet, and mobile devices
+- **Dark Mode Support**: Automatic theme switching based on system preferences
+- **Rule Testing**: Test individual log entries against detection rules in real-time
+
+### 🔍 **Core Analysis Features**
 - **Multi-format Log Parsing**: Supports Apache/Nginx access logs, syslog, Windows Event Logs, firewall logs, JSON logs, and more
 - **Advanced Threat Detection**: Over 20 built-in security rules detecting SQL injection, XSS, directory traversal, brute force attacks, privilege escalation, and more
 - **IP Analysis**: Automatic geolocation, suspicious IP detection, and traffic pattern analysis
@@ -78,6 +88,17 @@ pip install -e .
 ```
 
 ## 🎯 Quick Start
+
+### 🌐 **Web Interface (New!)**
+```bash
+# Launch the modern web interface
+python3 -m logsentry.cli web
+
+# Or use the standalone launcher
+python3 run_web.py
+
+# Access at http://localhost:5000
+```
 
 ### Analyze a Single Log File
 ```bash

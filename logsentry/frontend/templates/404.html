@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | LogSentry</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt"></i>
+                LogSentry
+                <small class="text-muted">by Anthony Frederick</small>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 404 Content -->
+    <div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+        <div class="text-center">
+            <div class="error-content">
+                <i class="fas fa-search fa-5x text-primary mb-4"></i>
+                <h1 class="display-1 text-primary">404</h1>
+                <h2 class="mb-4">Page Not Found</h2>
+                <p class="lead mb-4">
+                    The page you're looking for doesn't exist or has been moved.
+                    <br>
+                    Let's get you back to analyzing logs!
+                </p>
+                
+                <div class="mt-4">
+                    <a href="/" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-home"></i>
+                        Go Home
+                    </a>
+                    <a href="/#upload-section" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-upload"></i>
+                        Upload Logs
+                    </a>
+                </div>
+                
+                <div class="mt-5">
+                    <small class="text-muted">
+                        <i class="fas fa-shield-alt"></i>
+                        LogSentry Security Log Analyzer - Created by Anthony Frederick, 2025
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">
+                &copy; 2025 LogSentry by Anthony Frederick. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
