@@ -1,0 +1,429 @@
+{
+  "file_path": "test_sample.log",
+  "total_lines": 50,
+  "parsed_lines": 50,
+  "detections": [
+    {
+      "rule_name": "privileged_escalation",
+      "severity": "Severity.HIGH",
+      "description": "Potential privilege escalation attempt",
+      "matched_text": "privilege escalat",
+      "line_number": 1,
+      "timestamp": null,
+      "category": "privilege_escalation",
+      "tags": [
+        "privilege_escalation",
+        "admin"
+      ],
+      "confidence": 0.9999999999999999
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404 404",
+      "line_number": 2,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404",
+      "line_number": 5,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "failed_login_attempt",
+      "severity": "Severity.MEDIUM",
+      "description": "Failed login attempt detected",
+      "matched_text": "failed login",
+      "line_number": 6,
+      "timestamp": null,
+      "category": "authentication",
+      "tags": [
+        "bruteforce",
+        "authentication"
+      ],
+      "confidence": 0.7999999999999999
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 200 1434",
+      "line_number": 7,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 304 408",
+      "line_number": 8,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404 485",
+      "line_number": 12,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404",
+      "line_number": 15,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 200 591",
+      "line_number": 16,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 301 421",
+      "line_number": 17,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "suspicious_user_agent",
+      "severity": "Severity.MEDIUM",
+      "description": "Suspicious user agent detected",
+      "matched_text": "sqlmap",
+      "line_number": 19,
+      "timestamp": null,
+      "category": "network_attack",
+      "tags": [
+        "suspicious_ua",
+        "scanning"
+      ],
+      "confidence": 0.7999999999999999
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" User-Agent: sqlmap/1.0\" 400",
+      "line_number": 19,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404 491",
+      "line_number": 25,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404",
+      "line_number": 29,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404 2550",
+      "line_number": 30,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 304 2412",
+      "line_number": 31,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404",
+      "line_number": 33,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 200 1482",
+      "line_number": 37,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "failed_login_attempt",
+      "severity": "Severity.MEDIUM",
+      "description": "Failed login attempt detected",
+      "matched_text": "failed login",
+      "line_number": 39,
+      "timestamp": null,
+      "category": "authentication",
+      "tags": [
+        "bruteforce",
+        "authentication"
+      ],
+      "confidence": 0.7999999999999999
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 404 477",
+      "line_number": 43,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    },
+    {
+      "rule_name": "http_error_spike",
+      "severity": "Severity.LOW",
+      "description": "HTTP error response (potential attack)",
+      "matched_text": "HTTP/1.1\" 301 3497",
+      "line_number": 47,
+      "timestamp": null,
+      "category": "web_error",
+      "tags": [
+        "http_error",
+        "web"
+      ],
+      "confidence": 0.7
+    }
+  ],
+  "summary": {
+    "total": 21,
+    "by_severity": {
+      "high": 1,
+      "low": 17,
+      "medium": 3
+    },
+    "by_category": {
+      "privilege_escalation": 1,
+      "web_error": 17,
+      "authentication": 2,
+      "network_attack": 1
+    },
+    "by_rule": {
+      "privileged_escalation": 1,
+      "http_error_spike": 17,
+      "failed_login_attempt": 2,
+      "suspicious_user_agent": 1
+    },
+    "confidence_avg": 0.7285714285714285,
+    "log_entries_parsed": 50,
+    "unique_ips": 6,
+    "private_ips": 5,
+    "public_ips": 1,
+    "suspicious_ips": 0,
+    "top_threats": [
+      {
+        "rule": "http_error_spike",
+        "count": 17,
+        "severity": "low"
+      },
+      {
+        "rule": "failed_login_attempt",
+        "count": 2,
+        "severity": "medium"
+      },
+      {
+        "rule": "privileged_escalation",
+        "count": 1,
+        "severity": "high"
+      },
+      {
+        "rule": "suspicious_user_agent",
+        "count": 1,
+        "severity": "medium"
+      }
+    ],
+    "risk_score": {
+      "score": 12,
+      "level": "low",
+      "factors": []
+    }
+  },
+  "analysis_time": 0.004384,
+  "log_types": {
+    "syslog": 3,
+    "apache_access": 46,
+    "generic": 1
+  },
+  "ip_analysis": {
+    "total_unique_ips": 6,
+    "private_ips": 5,
+    "public_ips": 1,
+    "top_ips": [
+      {
+        "ip": "10.0.0.50",
+        "count": 10,
+        "first_seen": "2025-07-18T04:23:38",
+        "last_seen": "2025-07-18T22:29:38",
+        "detections": [],
+        "is_private": true,
+        "geolocation": {}
+      },
+      {
+        "ip": "172.16.0.10",
+        "count": 9,
+        "first_seen": "2025-07-18T07:01:38",
+        "last_seen": "2025-07-19T01:53:38",
+        "detections": [],
+        "is_private": true,
+        "geolocation": {}
+      },
+      {
+        "ip": "203.0.113.42",
+        "count": 9,
+        "first_seen": "1900-07-18T15:44:38",
+        "last_seen": "2025-07-18T22:03:38",
+        "detections": [],
+        "is_private": true,
+        "geolocation": {}
+      },
+      {
+        "ip": "93.184.216.34",
+        "count": 9,
+        "first_seen": "2025-07-18T03:53:38",
+        "last_seen": "2025-07-19T01:48:38",
+        "detections": [],
+        "is_private": false,
+        "geolocation": {
+          "country": "Unknown",
+          "city": "Unknown",
+          "asn": "Unknown",
+          "is_tor": false,
+          "is_vpn": false
+        }
+      },
+      {
+        "ip": "198.51.100.25",
+        "count": 6,
+        "first_seen": "2025-07-18T06:50:38",
+        "last_seen": "2025-07-19T00:06:38",
+        "detections": [],
+        "is_private": true,
+        "geolocation": {}
+      },
+      {
+        "ip": "192.168.1.100",
+        "count": 6,
+        "first_seen": "2025-07-18T03:03:38",
+        "last_seen": "2025-07-18T16:35:38",
+        "detections": [],
+        "is_private": true,
+        "geolocation": {}
+      }
+    ],
+    "suspicious_ips": []
+  },
+  "timeline": []
+}

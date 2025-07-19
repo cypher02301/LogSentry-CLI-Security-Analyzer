@@ -1,0 +1,67 @@
+Line Number,Timestamp,Severity,Rule Name,Category,Description,Matched Text,Confidence
+1,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+4,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+6,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 426",0.70
+7,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 462",0.70
+9,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 474",0.70
+10,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 590",0.70
+11,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+12,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 3578",0.70
+13,,high,xss_attempt,web_attack,Cross-Site Scripting (XSS) attempt,<script,0.90
+13,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 500",0.70
+14,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 477",0.70
+15,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 411",0.70
+17,,medium,failed_login_attempt,authentication,Failed login attempt detected,failed login,0.80
+19,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 2576",0.70
+21,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+22,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 2489",0.70
+25,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 427",0.70
+27,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 404",0.70
+28,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 4419",0.70
+29,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 406",0.70
+30,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 3510",0.70
+31,,high,privileged_escalation,privilege_escalation,Potential privilege escalation attempt,privilege escalat,1.00
+33,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 1417",0.70
+35,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 2591",0.70
+38,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 429",0.70
+40,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 439",0.70
+42,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 1492",0.70
+43,,high,lfi_rfi_attempt,web_attack,Local/Remote File Inclusion attempt,../,0.90
+43,,high,suspicious_file_access,file_access,Access to suspicious files,/etc/passwd,0.90
+43,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 558",0.70
+43,,high,directory_traversal,web_attack,Directory traversal attempt,../,0.90
+46,,high,privileged_escalation,privilege_escalation,Potential privilege escalation attempt,privilege escalat,1.00
+47,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+51,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+52,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+54,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 2437",0.70
+57,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 200 467",0.70
+59,,high,privileged_escalation,privilege_escalation,Potential privilege escalation attempt,privilege escalat,1.00
+60,,high,privileged_escalation,privilege_escalation,Potential privilege escalation attempt,privilege escalat,1.00
+61,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 428",0.70
+62,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 411",0.70
+64,,medium,failed_login_attempt,authentication,Failed login attempt detected,failed login,0.80
+66,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+67,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+69,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+72,,high,lfi_rfi_attempt,web_attack,Local/Remote File Inclusion attempt,../,0.90
+72,,high,suspicious_file_access,file_access,Access to suspicious files,/etc/passwd,0.90
+72,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+72,,high,directory_traversal,web_attack,Directory traversal attempt,../,0.90
+73,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 2445",0.70
+75,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 4412",0.70
+77,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+80,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 1586",0.70
+82,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 1576",0.70
+83,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 1519",0.70
+84,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 304 1509",0.70
+86,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 1496",0.70
+87,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+88,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+89,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+90,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 301 4533",0.70
+93,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 1437",0.70
+94,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404",0.70
+95,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 404 2474",0.70
+100,,high,xss_attempt,web_attack,Cross-Site Scripting (XSS) attempt,<script,0.90
+100,,low,http_error_spike,web_error,HTTP error response (potential attack),"HTTP/1.1"" 403 470",0.70
