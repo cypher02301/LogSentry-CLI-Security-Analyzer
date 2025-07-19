@@ -1,0 +1,50 @@
+Jul 18 18:33:38 server security: privilege escalation attempt: sudo su - root
+172.16.0.10 - - [19/Jul/2025:01:53:38 +0000] "GET /index.html HTTP/1.1" 404 4042
+198.51.100.25 - - [18/Jul/2025:15:55:38 +0000] "GET /images/logo.png HTTP/1.1" 200 1864
+203.0.113.42 - - [18/Jul/2025:15:56:38 +0000] "GET /css/style.css HTTP/1.1" 304 1166
+198.51.100.25 - - [18/Jul/2025:15:22:38 +0000] "GET /about.html HTTP/1.1" 404 1290
+Jul 18 16:18:38 server security: multiple failed login attempts detected from 203.0.113.42
+93.184.216.34 - - [19/Jul/2025:00:45:38 +0000] "GET /css/style.css HTTP/1.1" 200 1434
+172.16.0.10 - - [18/Jul/2025:10:20:38 +0000] "GET /index.html HTTP/1.1" 304 4085
+198.51.100.25 - - [19/Jul/2025:00:06:38 +0000] "GET /about.html HTTP/1.1" 301 1238
+10.0.0.50 - - [18/Jul/2025:19:25:38 +0000] "GET /images/logo.png HTTP/1.1" 304 814
+10.0.0.50 - - [18/Jul/2025:21:30:38 +0000] "GET /about.html HTTP/1.1" 200 1083
+172.16.0.10 - - [18/Jul/2025:11:02:38 +0000] "POST /login HTTP/1.1" 404 4853
+198.51.100.25 - - [18/Jul/2025:07:02:38 +0000] "GET /images/logo.png HTTP/1.1" 304 1649
+203.0.113.42 - - [18/Jul/2025:22:03:38 +0000] "GET /index.html HTTP/1.1" 200 2254
+192.168.1.100 - - [18/Jul/2025:12:20:38 +0000] "POST /login HTTP/1.1" 404 3092
+203.0.113.42 - - [18/Jul/2025:12:37:38 +0000] "GET /images/logo.png HTTP/1.1" 200 591
+10.0.0.50 - - [18/Jul/2025:09:43:38 +0000] "GET /about.html HTTP/1.1" 301 4215
+172.16.0.10 - - [18/Jul/2025:16:40:38 +0000] "GET /about.html HTTP/1.1" 301 1824
+172.16.0.10 - - [18/Jul/2025:13:58:38 +0000] "GET /wp-admin/ HTTP/1.1" User-Agent: sqlmap/1.0" 400 866
+192.168.1.100 - - [18/Jul/2025:08:25:38 +0000] "POST /login HTTP/1.1" 200 2978
+93.184.216.34 - - [18/Jul/2025:09:26:38 +0000] "GET /css/style.css HTTP/1.1" 200 1773
+93.184.216.34 - - [19/Jul/2025:01:48:38 +0000] "GET /about.html HTTP/1.1" 200 2850
+10.0.0.50 - - [18/Jul/2025:05:22:38 +0000] "GET /images/logo.png HTTP/1.1" 304 3810
+93.184.216.34 - - [18/Jul/2025:15:26:38 +0000] "GET /index.html HTTP/1.1" 301 663
+203.0.113.42 - - [18/Jul/2025:06:58:38 +0000] "POST /login HTTP/1.1" 404 4914
+203.0.113.42 - - [18/Jul/2025:14:56:38 +0000] "GET /images/logo.png HTTP/1.1" 200 1601
+93.184.216.34 - - [18/Jul/2025:14:57:38 +0000] "GET /images/logo.png HTTP/1.1" 200 2630
+172.16.0.10 - - [18/Jul/2025:21:05:38 +0000] "GET /images/logo.png HTTP/1.1" 200 679
+198.51.100.25 - - [18/Jul/2025:14:30:38 +0000] "POST /login HTTP/1.1" 404 2230
+203.0.113.42 - - [18/Jul/2025:20:50:38 +0000] "GET /index.html HTTP/1.1" 404 2550
+93.184.216.34 - - [18/Jul/2025:13:20:38 +0000] "POST /login HTTP/1.1" 304 2412
+10.0.0.50 - - [18/Jul/2025:22:29:38 +0000] "GET /css/style.css HTTP/1.1" 200 1874
+172.16.0.10 - - [19/Jul/2025:01:09:38 +0000] "GET /css/style.css HTTP/1.1" 404 1857
+10.0.0.50 - - [18/Jul/2025:05:05:38 +0000] "GET /about.html HTTP/1.1" 200 2879
+192.168.1.100 - - [18/Jul/2025:03:03:38 +0000] "GET /about.html HTTP/1.1" 200 989
+203.0.113.42 - - [18/Jul/2025:20:57:38 +0000] "GET /images/logo.png HTTP/1.1" 304 1192
+93.184.216.34 - - [19/Jul/2025:00:22:38 +0000] "GET /about.html HTTP/1.1" 200 1482
+10.0.0.50 - - [18/Jul/2025:13:27:38 +0000] "GET /css/style.css HTTP/1.1" 200 3094
+Jul 18 15:44:38 server security: multiple failed login attempts detected from 203.0.113.42
+93.184.216.34 - - [18/Jul/2025:03:53:38 +0000] "GET /css/style.css HTTP/1.1" 301 1131
+198.51.100.25 - - [18/Jul/2025:06:50:38 +0000] "GET /images/logo.png HTTP/1.1" 200 1118
+10.0.0.50 - - [18/Jul/2025:04:23:38 +0000] "GET /images/logo.png HTTP/1.1" 304 2248
+10.0.0.50 - - [18/Jul/2025:06:19:38 +0000] "GET /css/style.css HTTP/1.1" 404 4776
+93.184.216.34 - - [18/Jul/2025:17:19:38 +0000] "GET /images/logo.png HTTP/1.1" 304 3831
+10.0.0.50 - - [18/Jul/2025:09:26:38 +0000] "GET /css/style.css HTTP/1.1" 304 1375
+192.168.1.100 - - [18/Jul/2025:16:35:38 +0000] "GET /images/logo.png HTTP/1.1" 200 3059
+172.16.0.10 - - [18/Jul/2025:07:01:38 +0000] "POST /login HTTP/1.1" 301 3497
+172.16.0.10 - - [18/Jul/2025:20:53:38 +0000] "GET /index.html HTTP/1.1" 301 1305
+192.168.1.100 - - [18/Jul/2025:12:15:38 +0000] "GET /index.html HTTP/1.1" 200 2941
+192.168.1.100 - - [18/Jul/2025:08:40:38 +0000] "GET /about.html HTTP/1.1" 301 3392

