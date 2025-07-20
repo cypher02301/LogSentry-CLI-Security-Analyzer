@@ -12,6 +12,16 @@ LogSentry is a powerful Python-based command-line tool for analyzing log files a
 
 ## 🚀 Features
 
+### 🌐 **Modern Web Interface**
+- **Drag & Drop Upload**: Easy file upload with progress indicators
+- **Real-time Analysis**: Live threat detection with interactive feedback
+- **Interactive Charts**: Beautiful visualizations with Chart.js (pie charts, bar charts)
+- **Export Capabilities**: Download results in JSON/CSV formats
+- **Mobile Responsive**: Works perfectly on desktop, tablet, and mobile devices
+- **Dark Mode Support**: Automatic theme switching based on system preferences
+- **Rule Testing**: Test individual log entries against detection rules in real-time
+
+### 🔍 **Core Analysis Features**
 - **Multi-format Log Parsing**: Supports Apache/Nginx access logs, syslog, Windows Event Logs, firewall logs, JSON logs, and more
 - **Advanced Threat Detection**: Over 20 built-in security rules detecting SQL injection, XSS, directory traversal, brute force attacks, privilege escalation, and more
 - **IP Analysis**: Automatic geolocation, suspicious IP detection, and traffic pattern analysis
@@ -24,26 +34,81 @@ LogSentry is a powerful Python-based command-line tool for analyzing log files a
 
 ## 📦 Installation
 
+### 🚨 **Quick Fix for setuptools Error**
+
+If you get `ModuleNotFoundError: No module named 'setuptools'`, run this:
+
+```bash
+# Quick fix script
+python3 quick_start.py
+
+# Or manual fix
+pip install --break-system-packages setuptools wheel
+# OR
+pip install --user setuptools wheel
+```
+
 ### From PyPI (Recommended)
 ```bash
 pip install logsentry
 ```
 
-### From Source
+### From Source (Modern Method)
 ```bash
-git clone https://github.com/logsentry/logsentry.git
+git clone https://github.com/anthony-frederick/logsentry.git
 cd logsentry
+pip install -e .[dev]
+```
+
+### Legacy Installation (Deprecated)
+If you see deprecation warnings about `setup.py develop`, use the modern method above or see [SETUP_MIGRATION.md](SETUP_MIGRATION.md) for migration guide.
+
+### Development Installation (Full Setup)
+```bash
+git clone https://github.com/anthony-frederick/logsentry.git
+cd logsentry
+
+# Install with all features (dev tools, web interface, build tools)
+pip install -e .[dev,web,build]
+
+# Or install specific feature groups:
+pip install -e .[dev]    # Development tools only
+pip install -e .[web]    # Web interface dependencies
+pip install -e .[build]  # Executable building tools
+```
+
+### Alternative Installation Methods
+
+**For Wing IDE / IDE Users:**
+```bash
+# Use the automated installer
+python3 install_logsentry.py
+
+# Or run directly without installation
+python3 -m logsentry.cli --help
+```
+
+**For Virtual Environments:**
+```bash
+python -m venv logsentry_env
+source logsentry_env/bin/activate  # Linux/Mac
+# or logsentry_env\Scripts\activate  # Windows
+pip install setuptools wheel
 pip install -e .
 ```
 
-### Development Installation
-```bash
-git clone https://github.com/logsentry/logsentry.git
-cd logsentry
-pip install -e ".[dev]"
-```
-
 ## 🎯 Quick Start
+
+### 🌐 **Web Interface (New!)**
+```bash
+# Launch the modern web interface
+python3 -m logsentry.cli web
+
+# Or use the standalone launcher
+python3 run_web.py
+
+# Access at http://localhost:5000
+```
 
 ### Analyze a Single Log File
 ```bash

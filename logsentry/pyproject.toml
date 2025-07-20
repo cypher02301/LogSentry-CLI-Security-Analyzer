@@ -1,0 +1,201 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logsentry"
+version = "1.0.0"
+description = "LogSentry CLI Security Analyzer - Advanced log analysis and threat detection"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Anthony Frederick", email = "anthony.frederick@example.com"}
+]
+keywords = ["security", "log-analysis", "threat-detection", "cli", "cybersecurity"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Information Technology",
+    "Topic :: Security",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Logging",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Environment :: Web Environment",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0",
+    "rich>=12.0",
+    "colorama>=0.4.4",
+    "python-dateutil>=2.8.0",
+    "pyyaml>=6.0",
+    "regex>=2023.0.0",
+    "flask>=2.0",
+    "werkzeug>=2.0",
+    "jinja2>=3.0",
+    "markupsafe>=2.0",
+    "itsdangerous>=2.0",
+    "blinker>=1.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "mypy>=1.0",
+    "coverage>=7.0",
+]
+web = [
+    "flask>=2.0",
+    "werkzeug>=2.0",
+    "jinja2>=3.0",
+]
+build = [
+    "pyinstaller>=6.0",
+    "setuptools>=64",
+    "wheel",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/anthony-frederick/logsentry"
+"Bug Reports" = "https://github.com/anthony-frederick/logsentry/issues"
+"Source" = "https://github.com/anthony-frederick/logsentry"
+"Documentation" = "https://github.com/anthony-frederick/logsentry/blob/main/README.md"
+
+[project.scripts]
+logsentry = "logsentry.cli:cli"
+logsentry-web = "logsentry.web_app:run_web_app"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["logsentry*"]
+exclude = ["tests*", "build*", "dist*"]
+
+[tool.setuptools.package-data]
+logsentry = [
+    "frontend/templates/*.html",
+    "frontend/static/css/*.css",
+    "frontend/static/js/*.js",
+    "*.md",
+    "*.txt",
+    "*.yml",
+    "*.yaml",
+]
+
+# Black code formatter configuration
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312', 'py313']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+# MyPy type checker configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "rich.*",
+    "colorama.*",
+    "yaml.*",
+    "regex.*",
+]
+ignore_missing_imports = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["logsentry"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "setup.py",
+    "build_executables.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# Flake8 configuration (in setup.cfg format since flake8 doesn't support pyproject.toml yet)
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".eggs",
+    "*.egg-info",
+    ".venv",
+    "venv",
+]

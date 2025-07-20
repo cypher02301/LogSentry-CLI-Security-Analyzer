@@ -1,0 +1,51 @@
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# PyInstaller
+*.manifest
+*.spec.backup
+
+# Local uploads (for web interface)
+frontend/static/uploads/*
+!frontend/static/uploads/.gitkeep
+
+# Sensitive data
+.env
+config.ini
+secrets.yaml

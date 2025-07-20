@@ -507,5 +507,34 @@ def _generate_sample_logs(output_file: str, count: int, include_attacks: bool):
             f.write(log_line + '\n')
 
 
+@cli.command()
+@click.option('--host', default='0.0.0.0', help='Host to bind to')
+@click.option('--port', default=5000, help='Port to listen on')
+@click.option('--debug', is_flag=True, help='Enable debug mode')
+def web(host, port, debug):
+    """Launch the LogSentry web interface"""
+    try:
+        click.echo(click.style("🛡️  LogSentry Web Interface", fg='blue', bold=True))
+        click.echo("Created by Anthony Frederick, 2025")
+        click.echo("=" * 50)
+        click.echo()
+        
+        # Import and run the web app
+        from .web_app import run_web_app
+        
+        click.echo(f"🌐 Starting web server on http://{host}:{port}")
+        click.echo("🔍 Open your browser and navigate to the URL above")
+        click.echo("💡 Use Ctrl+C to stop the server")
+        click.echo()
+        
+        run_web_app(host=host, port=port, debug=debug)
+        
+    except KeyboardInterrupt:
+        click.echo(click.style("\n👋 LogSentry web server stopped", fg='yellow'))
+    except Exception as e:
+        click.echo(click.style(f"❌ Failed to start web server: {e}", fg='red'), err=True)
+        sys.exit(1)
+
+
 if __name__ == '__main__':
     cli()
