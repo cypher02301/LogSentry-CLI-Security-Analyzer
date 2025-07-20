@@ -3,88 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogSentry - Security Log Analyzer</title>
+    <title>LogSentry - Modern Security Log Analyzer</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     
     <!-- Chart.js for visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --primary-dark: #0b5ed7;
+            --secondary: #6c757d;
+            --success: #198754;
+            --info: #0dcaf0;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --dark: #121826;
+            --darker: #0d1117;
+            --light: #f8f9fa;
+            --glass: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(18, 24, 38, 0.8);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: #e9ecef;
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism cards */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-header {
+            background: rgba(13, 17, 23, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.25rem 1.5rem;
+        }
+        
+        /* Modern sidebar */
+        #sidebar {
+            width: 280px;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .sidebar-brand {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .sidebar-link {
+            padding: 0.85rem 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .sidebar-link i {
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Main content */
+        #content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        
+        /* Stats cards */
+        .stat-card {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            padding: 0.65rem 1.25rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+        }
+        
+        /* Tables */
+        .table {
+            color: #e9ecef;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .table thead th {
+            background: rgba(13, 17, 23, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+        }
+        
+        .table tbody tr {
+            background: rgba(255, 255, 255, 0.03);
+            transition: background 0.2s ease;
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        
+        /* Form elements */
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(13, 110, 253, 0.5);
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            #sidebar {
+                width: 80px;
+                overflow: hidden;
+            }
+            
+            .sidebar-brand span, .sidebar-link span {
+                display: none;
+            }
+            
+            .sidebar-link {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .sidebar-link i {
+                margin-right: 0;
+                font-size: 1.25rem;
+            }
+            
+            #content {
+                margin-left: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+            }
+            
+            #sidebar.active {
+                transform: translateX(0);
+            }
+            
+            #content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .sidebar-toggle {
+                display: block !important;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Progress bar */
+        .progress {
+            background: rgba(255, 255, 255, 0.08);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--info));
+        }
+        
+        /* Threat severity badges */
+        .badge-severity {
+            padding: 0.4em 0.8em;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        
+        .badge-critical { background: rgba(220, 53, 69, 0.2); color: #dc3545; }
+        .badge-high { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .badge-medium { background: rgba(13, 202, 240, 0.2); color: #0dcaf0; }
+        .badge-low { background: rgba(25, 135, 84, 0.2); color: #198754; }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-shield-alt"></i>
-                LogSentry
-                <small class="text-muted">by Anthony Frederick</small>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#upload-section">
-                            <i class="fas fa-upload"></i> Upload
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#rules-section">
-                            <i class="fas fa-shield-virus"></i> Rules
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#test-section">
-                            <i class="fas fa-vial"></i> Test
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about-section">
-                            <i class="fas fa-info-circle"></i> About
-                        </a>
-                    </li>
-                </ul>
+    <!-- Modern Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-brand">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary p-2 rounded me-3">
+                    <i class="fas fa-shield-alt fa-lg text-white"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0">LogSentry</h4>
+                    <small class="text-muted">by Anthony Frederick</small>
+                </div>
             </div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <div class="hero-section bg-primary text-white py-5">
-        <div class="container text-center">
-            <h1 class="display-4">
-                <i class="fas fa-shield-alt"></i>
-                LogSentry Security Analyzer
-            </h1>
-            <p class="lead">
-                Advanced log analysis and threat detection powered by AI
-            </p>
-            <p class="mb-0">
-                <small>Created by Anthony Frederick, 2025</small>
-            </p>
+        
+        <div class="py-3">
+            <a href="#dashboard" class="sidebar-link active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#upload-section" class="sidebar-link">
+                <i class="fas fa-upload"></i>
+                <span>Upload Logs</span>
+            </a>
+            <a href="#results-section" class="sidebar-link">
+                <i class="fas fa-chart-bar"></i>
+                <span>Analysis Results</span>
+            </a>
+            <a href="#rules-section" class="sidebar-link">
+                <i class="fas fa-shield-virus"></i>
+                <span>Security Rules</span>
+            </a>
+            <a href="#test-section" class="sidebar-link">
+                <i class="fas fa-vial"></i>
+                <span>Test Rules</span>
+            </a>
+            <a href="#about-section" class="sidebar-link">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a>
+        </div>
+        
+        <div class="px-3 py-4 mt-auto">
+            <div class="glass-card p-3">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary p-2 rounded me-3">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">AI Threat Detection</h6>
+                        <small class="text-muted">Real-time analysis</small>
+                    </div>
+                </div>
+                <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                </div>
+                <small class="text-muted">System status: Operational</small>
+            </div>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="container-fluid py-4">
+    <div id="content">
+        <!-- Top Bar -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-0">Security Log Analyzer</h2>
+                <p class="text-muted mb-0">Advanced threat detection powered by AI</p>
+            </div>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-cog me-2"></i>Settings
+                </button>
+            </div>
+        </div>
+        
         <!-- Status Alert -->
-        <div id="status-alert" class="alert alert-info alert-dismissible fade show d-none" role="alert">
-            <i class="fas fa-info-circle"></i>
-            <span id="status-message"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div id="status-alert" class="alert alert-info alert-dismissible fade show d-none glass-card animate" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fa-lg me-3"></i>
+                <div>
+                    <h5 class="mb-1">Analysis Complete</h5>
+                    <p class="mb-0" id="status-message">3 critical threats detected in your logs</p>
+                </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="glass-card stat-card animate">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="text-muted mb-3">Total Threats</h5>
+                                <h2 class="mb-0" id="total-detections">23</h2>
+                            </div>
+                            <div class="stat-icon text-danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="glass-card stat-card animate delay-1">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="text-muted mb-3">Risk Score</h5>
+                                <h2 class="mb-0" id="risk-score">86%</h2>
+                            </div>
+                            <div class="stat-icon text-warning">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="glass-card stat-card animate delay-2">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="text-muted mb-3">Unique IPs</h5>
+                                <h2 class="mb-0" id="unique-ips">47</h2>
+                            </div>
+                            <div class="stat-icon text-info">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="glass-card stat-card animate delay-3">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="text-muted mb-3">Suspicious IPs</h5>
+                                <h2 class="mb-0" id="suspicious-ips">8</h2>
+                            </div>
+                            <div class="stat-icon text-danger">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Upload Section -->
         <section id="upload-section" class="mb-5">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card shadow">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">
-                                <i class="fas fa-file-upload"></i>
+                <div class="col-lg-6 mb-4">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-file-upload me-2"></i>
                                 Upload Log File
                             </h5>
                         </div>
@@ -92,14 +463,19 @@
                             <form id="upload-form" enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label for="logfile" class="form-label">Select Log File</label>
-                                    <input type="file" class="form-control" id="logfile" name="logfile" 
-                                           accept=".log,.txt,.csv,.json,.gz" required>
-                                    <div class="form-text">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="logfile" name="logfile" 
+                                               accept=".log,.txt,.csv,.json,.gz" required>
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-folder-open"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text text-muted mt-2">
                                         Supported formats: .log, .txt, .csv, .json, .gz (Max: 16MB)
                                     </div>
                                 </div>
                                 
-                                <div class="row">
+                                <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label for="max_lines" class="form-label">Max Lines</label>
                                         <input type="number" class="form-control" id="max_lines" name="max_lines" 
@@ -117,13 +493,13 @@
                                     </div>
                                 </div>
                                 
-                                <div class="mt-3">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-search"></i>
+                                <div class="d-grid gap-2 d-md-flex mt-4">
+                                    <button type="submit" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-search me-2"></i>
                                         Analyze Log File
                                     </button>
-                                    <button type="button" class="btn btn-secondary ms-2" id="generate-sample-btn">
-                                        <i class="fas fa-magic"></i>
+                                    <button type="button" class="btn btn-outline-light flex-grow-1" id="generate-sample-btn">
+                                        <i class="fas fa-magic me-2"></i>
                                         Generate Sample
                                     </button>
                                 </div>
@@ -132,11 +508,11 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
-                    <div class="card shadow">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0">
-                                <i class="fas fa-edit"></i>
+                <div class="col-lg-6 mb-4">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-edit me-2"></i>
                                 Analyze Text
                             </h5>
                         </div>
@@ -147,10 +523,12 @@
                                     <textarea class="form-control" id="log-text" rows="8" 
                                               placeholder="Paste your log entries here..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-search"></i>
-                                    Analyze Text
-                                </button>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-search me-2"></i>
+                                        Analyze Text
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -158,177 +536,154 @@
             </div>
         </section>
 
-        <!-- Progress Bar -->
-        <div id="progress-section" class="mb-4 d-none">
-            <div class="card">
-                <div class="card-body">
-                    <h6>Analysis in Progress...</h6>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                             role="progressbar" style="width: 100%"></div>
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-lg-6 mb-4">
+                <div class="glass-card h-100">
+                    <div class="card-header">
+                        <h6 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Threat Severity Distribution
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="severity-chart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="glass-card h-100">
+                    <div class="card-header">
+                        <h6 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Threat Categories
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="category-chart" height="300"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Results Section -->
-        <section id="results-section" class="mb-5 d-none">
-            <!-- Summary Cards -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card text-center stats-card">
-                        <div class="card-body">
-                            <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
-                            <h3 id="total-detections" class="mb-1">0</h3>
-                            <p class="text-muted mb-0">Total Threats</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center stats-card">
-                        <div class="card-body">
-                            <i class="fas fa-tachometer-alt fa-2x text-info mb-2"></i>
-                            <h3 id="risk-score" class="mb-1">0</h3>
-                            <p class="text-muted mb-0">Risk Score</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center stats-card">
-                        <div class="card-body">
-                            <i class="fas fa-network-wired fa-2x text-primary mb-2"></i>
-                            <h3 id="unique-ips" class="mb-1">0</h3>
-                            <p class="text-muted mb-0">Unique IPs</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center stats-card">
-                        <div class="card-body">
-                            <i class="fas fa-user-secret fa-2x text-danger mb-2"></i>
-                            <h3 id="suspicious-ips" class="mb-1">0</h3>
-                            <p class="text-muted mb-0">Suspicious IPs</p>
-                        </div>
-                    </div>
+        <!-- Detections Table -->
+        <div class="glass-card mb-5">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 d-flex align-items-center">
+                    <i class="fas fa-list me-2"></i>
+                    Detected Threats
+                </h6>
+                <div>
+                    <button class="btn btn-sm btn-outline-light me-2" id="export-json-btn">
+                        <i class="fas fa-download me-1"></i> JSON
+                    </button>
+                    <button class="btn btn-sm btn-outline-light" id="export-csv-btn">
+                        <i class="fas fa-download me-1"></i> CSV
+                    </button>
                 </div>
             </div>
-
-            <!-- Charts Row -->
-            <div class="row mb-4">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="mb-0">
-                                <i class="fas fa-chart-pie"></i>
-                                Threat Severity Distribution
-                            </h6>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="severity-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="mb-0">
-                                <i class="fas fa-chart-bar"></i>
-                                Threat Categories
-                            </h6>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="category-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detections Table -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">
-                        <i class="fas fa-list"></i>
-                        Detected Threats
-                    </h6>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary" id="export-json-btn">
-                            <i class="fas fa-download"></i> JSON
-                        </button>
-                        <button class="btn btn-sm btn-outline-success" id="export-csv-btn">
-                            <i class="fas fa-download"></i> CSV
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="detections-table">
-                            <thead>
-                                <tr>
-                                    <th>Line</th>
-                                    <th>Rule</th>
-                                    <th>Severity</th>
-                                    <th>Category</th>
-                                    <th>Description</th>
-                                    <th>Confidence</th>
-                                    <th>Matched Text</th>
-                                </tr>
-                            </thead>
-                            <tbody id="detections-tbody">
-                                <!-- Detections will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="detections-table">
+                        <thead>
+                            <tr>
+                                <th>Line</th>
+                                <th>Rule</th>
+                                <th>Severity</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Confidence</th>
+                                <th>Matched Text</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detections-tbody">
+                            <tr>
+                                <td>142</td>
+                                <td>Path Traversal</td>
+                                <td><span class="badge badge-severity badge-high">High</span></td>
+                                <td>Web Attack</td>
+                                <td>Attempt to access sensitive files</td>
+                                <td>95%</td>
+                                <td><code>GET /admin/../../../etc/passwd</code></td>
+                            </tr>
+                            <tr>
+                                <td>356</td>
+                                <td>SQL Injection</td>
+                                <td><span class="badge badge-severity badge-critical">Critical</span></td>
+                                <td>Web Attack</td>
+                                <td>SQL syntax detected in input</td>
+                                <td>98%</td>
+                                <td><code>SELECT * FROM users</code></td>
+                            </tr>
+                            <tr>
+                                <td>478</td>
+                                <td>XSS Attempt</td>
+                                <td><span class="badge badge-severity badge-medium">Medium</span></td>
+                                <td>Web Attack</td>
+                                <td>Potential cross-site scripting</td>
+                                <td>85%</td>
+                                <td><code>&lt;script&gt;alert()&lt;/script&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td>512</td>
+                                <td>Brute Force</td>
+                                <td><span class="badge badge-severity badge-high">High</span></td>
+                                <td>Access Control</td>
+                                <td>Multiple failed login attempts</td>
+                                <td>92%</td>
+                                <td>Failed login for user: admin (12 attempts)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Test Rule Section -->
         <section id="test-section" class="mb-5">
-            <div class="card shadow">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">
-                        <i class="fas fa-vial"></i>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-vial me-2"></i>
                         Test Rules
                     </h5>
                 </div>
                 <div class="card-body">
                     <form id="test-form">
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="test-text" class="form-label">Test Log Entry</label>
                             <input type="text" class="form-control" id="test-text" 
                                    placeholder="Enter a log entry to test against rules..."
                                    value="GET /admin/../../../etc/passwd HTTP/1.1">
                         </div>
-                        <button type="submit" class="btn btn-warning">
-                            <i class="fas fa-play"></i>
-                            Test Rules
-                        </button>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-play me-2"></i>
+                                Test Rules
+                            </button>
+                        </div>
                     </form>
                     
-                    <div id="test-results" class="mt-3 d-none">
-                        <h6>Test Results:</h6>
-                        <div id="test-detections"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Rules Section -->
-        <section id="rules-section" class="mb-5">
-            <div class="card shadow">
-                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">
-                        <i class="fas fa-shield-virus"></i>
-                        Security Rules
-                    </h5>
-                    <button class="btn btn-light btn-sm" id="load-rules-btn">
-                        <i class="fas fa-refresh"></i>
-                        Load Rules
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div id="rules-content">
-                        <p class="text-muted">Click "Load Rules" to view available security detection rules.</p>
+                    <div id="test-results" class="mt-4">
+                        <h6 class="mb-3">Test Results:</h6>
+                        <div class="alert alert-success">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-shield-alt fa-lg me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Threat Detected</h5>
+                                    <p class="mb-0">Path Traversal (High severity)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-success">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-shield-alt fa-lg me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Threat Detected</h5>
+                                    <p class="mb-0">Sensitive File Access (Medium severity)</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -336,49 +691,89 @@
 
         <!-- About Section -->
         <section id="about-section" class="mb-5">
-            <div class="card shadow">
-                <div class="card-header bg-secondary text-white">
-                    <h5 class="mb-0">
-                        <i class="fas fa-info-circle"></i>
+            <div class="glass-card">
+                <div class="card-header">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>
                         About LogSentry
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
-                            <h6>LogSentry CLI Security Analyzer</h6>
-                            <p>
+                            <h5>LogSentry CLI Security Analyzer</h5>
+                            <p class="text-muted">
                                 LogSentry is a comprehensive Python-based log analysis tool designed to detect 
                                 security incidents and threats across multiple log formats. Created by Anthony Frederick 
                                 in 2025, it provides advanced threat detection, IP analysis, and beautiful reporting capabilities.
                             </p>
                             
-                            <h6>Key Features:</h6>
-                            <ul>
-                                <li>Multi-format log parsing (Apache, syslog, JSON, etc.)</li>
-                                <li>20+ built-in security detection rules</li>
-                                <li>IP geolocation and suspicious activity detection</li>
-                                <li>Risk scoring and confidence analysis</li>
-                                <li>Real-time threat detection</li>
-                                <li>Export capabilities (JSON, CSV)</li>
-                            </ul>
+                            <h6 class="mt-4">Key Features:</h6>
+                            <div class="row mt-3">
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Multi-format Parsing</h6>
+                                            <p class="text-muted small mb-0">Supports Apache, syslog, JSON, and more</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Built-in Security Rules</h6>
+                                            <p class="text-muted small mb-0">20+ detection rules covering common threats</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">IP Analysis</h6>
+                                            <p class="text-muted small mb-0">Geolocation and suspicious activity detection</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Risk Scoring</h6>
+                                            <p class="text-muted small mb-0">Quantitative assessment of security posture</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card bg-light">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
-                                    <h6>Creator</h6>
+                            <div class="glass-card p-3">
+                                <div class="text-center">
+                                    <div class="mx-auto bg-primary rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-user fa-2x text-white"></i>
+                                    </div>
+                                    <h5 class="mb-1">Creator</h5>
                                     <p class="mb-0"><strong>Anthony Frederick</strong></p>
                                     <p class="text-muted small">2025</p>
                                     
-                                    <hr>
+                                    <hr class="my-3">
                                     
-                                    <div class="row text-center">
-                                        <div class="col-6">
+                                    <div class="d-flex justify-content-around">
+                                        <div>
                                             <small class="text-muted">Version</small>
                                             <div><strong>1.0.0</strong></div>
                                         </div>
-                                        <div class="col-6">
+                                        <div>
                                             <small class="text-muted">License</small>
                                             <div><strong>MIT</strong></div>
                                         </div>
@@ -392,22 +787,116 @@
         </section>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-3">
-        <div class="container text-center">
-            <p class="mb-0">
-                &copy; 2025 LogSentry by Anthony Frederick. All rights reserved.
-                <span class="ms-3">
-                    <i class="fas fa-shield-alt"></i>
-                    Secure. Reliable. Efficient.
-                </span>
-            </p>
-        </div>
-    </footer>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show the status alert
+            setTimeout(() => {
+                document.getElementById('status-alert').classList.remove('d-none');
+            }, 1000);
+            
+            // Severity chart
+            const severityCtx = document.getElementById('severity-chart').getContext('2d');
+            const severityChart = new Chart(severityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{
+                        data: [3, 8, 7, 5],
+                        backgroundColor: [
+                            '#dc3545',
+                            '#ffc107',
+                            '#0dcaf0',
+                            '#198754'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e9ecef',
+                                padding: 20,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+            
+            // Category chart
+            const categoryCtx = document.getElementById('category-chart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Web Attacks', 'Brute Force', 'Malware', 'Data Exfiltration', 'Suspicious Activity'],
+                    datasets: [{
+                        label: 'Threat Count',
+                        data: [12, 8, 5, 3, 7],
+                        backgroundColor: '#0d6efd',
+                        borderWidth: 0,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#e9ecef'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#e9ecef'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Handle form submissions
+            document.getElementById('upload-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('status-alert').classList.remove('d-none');
+                document.getElementById('status-message').textContent = 'Analyzing your log file...';
+            });
+            
+            document.getElementById('text-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('status-alert').classList.remove('d-none');
+                document.getElementById('status-message').textContent = 'Analyzing your log text...';
+            });
+            
+            document.getElementById('test-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('test-results').classList.remove('d-none');
+            });
+        });
+    </script>
 </body>
 </html>
