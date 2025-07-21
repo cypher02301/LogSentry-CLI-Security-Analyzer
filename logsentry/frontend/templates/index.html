@@ -410,6 +410,70 @@
         .glass-card .text-muted, .card .text-muted {
             color: rgba(255, 255, 255, 0.8) !important;
         }
+        
+        /* COMPREHENSIVE TEXT VISIBILITY FIXES - Apply to all areas except detected threats table */
+        
+        /* Global text fixes - exclude table content */
+        body *:not(#detections-table):not(#detections-table *):not(#detections-tbody):not(#detections-tbody *) {
+            color: inherit;
+        }
+        
+        /* Fix all text elements globally except table */
+        .container-fluid *:not(#detections-table):not(#detections-table *) .text-muted,
+        .container *:not(#detections-table):not(#detections-table *) .text-muted,
+        #content *:not(#detections-table):not(#detections-table *) .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix all small text */
+        small:not(#detections-table small):not(#detections-table * small),
+        .small:not(#detections-table .small):not(#detections-table * .small) {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix all paragraph text */
+        p:not(#detections-table p):not(#detections-table * p) {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+        
+        /* Fix all span text */
+        span.text-muted:not(#detections-table span):not(#detections-table * span) {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix sidebar text */
+        #sidebar .text-muted,
+        #sidebar small,
+        #sidebar p {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix top bar text */
+        .d-flex .text-muted,
+        .mb-4 .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix all card text except table cards */
+        .glass-card:not(#detections-table):not([id*="detections"]) .text-muted,
+        .glass-card:not(#detections-table):not([id*="detections"]) small,
+        .glass-card:not(#detections-table):not([id*="detections"]) p {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix alert text */
+        .alert .text-muted,
+        .alert small,
+        .alert p {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix section text */
+        section:not([id*="results"]) .text-muted,
+        section:not([id*="results"]) small,
+        section:not([id*="results"]) p {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
     </style>
 </head>
 <body>
