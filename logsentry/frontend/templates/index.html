@@ -207,6 +207,35 @@
             color: rgba(255, 255, 255, 0.8) !important;
         }
         
+        /* Fix specific dark text elements */
+        .card-body p {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+        
+        .form-text, .form-text.text-muted {
+            color: rgba(255, 255, 255, 0.75) !important;
+        }
+        
+        /* Stats card text */
+        .stat-card h2, .stat-card h5 {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* About section text */
+        #about-section p, #about-section .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* All paragraph text in cards */
+        .glass-card p, .glass-card .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Specific fix for form help text */
+        .mt-2.form-text {
+            color: rgba(255, 255, 255, 0.75) !important;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 992px) {
             #sidebar {
@@ -355,6 +384,31 @@
         .btn-outline-light:hover {
             color: #000 !important;
             background-color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* Additional text visibility fixes */
+        .card-body small, .card-body .small {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix all muted text variations */
+        .text-muted, span.text-muted, div.text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Fix specific stat card labels */
+        .stat-card .text-muted {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+        /* Ensure all paragraph text is visible */
+        p.text-muted, p .text-muted {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+        
+        /* Fix any remaining dark text */
+        .glass-card .text-muted, .card .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
         }
     </style>
 </head>
