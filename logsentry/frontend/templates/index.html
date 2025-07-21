@@ -292,6 +292,30 @@
         .badge-high { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
         .badge-medium { background: rgba(13, 202, 240, 0.2); color: #0dcaf0; }
         .badge-low { background: rgba(25, 135, 84, 0.2); color: #198754; }
+        
+        /* Custom logo styling */
+        .logo-img {
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Fallback for missing logo */
+        .logo-fallback {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -299,8 +323,13 @@
     <div id="sidebar">
         <div class="sidebar-brand">
             <div class="d-flex align-items-center">
-                <div class="bg-primary p-2 rounded me-3">
-                    <i class="fas fa-shield-alt fa-lg text-white"></i>
+                <div class="me-3">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" 
+                         alt="LogSentry Logo" 
+                         class="logo-img"
+                         style="width: 48px; height: 48px; border-radius: 8px; object-fit: contain;"
+                         onerror="this.src='{{ url_for('static', filename='images/logo.png') }}'; if(this.src.includes('logo.png') && this.complete && this.naturalWidth === 0) { this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
+                    <div class="logo-fallback" style="display: none;">LS</div>
                 </div>
                 <div>
                     <h4 class="mb-0">LogSentry</h4>
@@ -795,6 +824,18 @@
     <script>
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
+            // Handle logo fallback
+            const logoImg = document.querySelector('.logo-img');
+            if (logoImg) {
+                logoImg.onerror = function() {
+                    const fallback = document.createElement('div');
+                    fallback.className = 'logo-fallback';
+                    fallback.textContent = 'LS';
+                    fallback.title = 'LogSentry Logo';
+                    this.parentNode.replaceChild(fallback, this);
+                };
+            }
+            
             // Show the status alert
             setTimeout(() => {
                 document.getElementById('status-alert').classList.remove('d-none');
