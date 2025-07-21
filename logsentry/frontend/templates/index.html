@@ -966,13 +966,12 @@
                         <div class="col-md-4">
                             <div class="glass-card p-3">
                                 <div class="text-center">
-                                    <div class="mx-auto mb-3" style="width: 80px; height: 80px; position: relative;">
+                                    <div class="mx-auto mb-3 creator-logo-container" style="width: 80px; height: 80px;">
                                         <img src="{{ url_for('static', filename='images/logo.png') }}" 
                                              alt="Creator Logo" 
                                              class="creator-logo"
-                                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); position: absolute; top: 0; left: 0; z-index: 10;"
-                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        <div class="creator-logo-fallback bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; display: none; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); position: absolute; top: 0; left: 0; z-index: 5;">
+                                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                                        <div class="creator-logo-fallback bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; display: none; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
                                             <i class="fas fa-user fa-2x text-white"></i>
                                         </div>
                                     </div>
@@ -1035,37 +1034,46 @@
                 };
             }
             
-            // Handle creator logo
+            // Handle creator logo - completely replace original icon
             const creatorLogoImg = document.querySelector('.creator-logo');
             const creatorFallback = document.querySelector('.creator-logo-fallback');
             
             if (creatorLogoImg && creatorFallback) {
-                creatorLogoImg.onload = function() {
-                    if (this.naturalWidth > 0 && this.naturalHeight > 0) {
-                        // Logo loaded successfully, hide fallback
-                        creatorFallback.style.display = 'none';
-                        this.style.display = 'block';
-                    } else {
-                        // Logo failed to load, show fallback
-                        this.style.display = 'none';
-                        creatorFallback.style.display = 'flex';
-                    }
+                // Function to show logo and hide fallback
+                const showLogo = function() {
+                    creatorLogoImg.style.display = 'block';
+                    creatorFallback.style.display = 'none';
                 };
                 
-                creatorLogoImg.onerror = function() {
-                    // Logo failed to load, show fallback
-                    this.style.display = 'none';
+                // Function to show fallback and hide logo
+                const showFallback = function() {
+                    creatorLogoImg.style.display = 'none';
                     creatorFallback.style.display = 'flex';
                 };
                 
-                // Initial check - if logo is already loaded
-                if (creatorLogoImg.complete) {
-                    if (creatorLogoImg.naturalWidth > 0 && creatorLogoImg.naturalHeight > 0) {
-                        creatorFallback.style.display = 'none';
-                        creatorLogoImg.style.display = 'block';
+                // Check if logo loads successfully
+                creatorLogoImg.onload = function() {
+                    if (this.naturalWidth > 0 && this.naturalHeight > 0 && this.src && !this.src.includes('data:')) {
+                        showLogo();
                     } else {
-                        creatorLogoImg.style.display = 'none';
-                        creatorFallback.style.display = 'flex';
+                        showFallback();
+                    }
+                };
+                
+                // Handle logo load errors
+                creatorLogoImg.onerror = function() {
+                    showFallback();
+                };
+                
+                // Initial state - assume logo will fail until proven otherwise
+                showFallback();
+                
+                // Check if logo is already loaded (cached)
+                if (creatorLogoImg.complete) {
+                    if (creatorLogoImg.naturalWidth > 0 && creatorLogoImg.naturalHeight > 0 && creatorLogoImg.src && !creatorLogoImg.src.includes('data:')) {
+                        showLogo();
+                    } else {
+                        showFallback();
                     }
                 }
             }
