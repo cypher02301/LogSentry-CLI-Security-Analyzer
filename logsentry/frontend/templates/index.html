@@ -474,6 +474,25 @@
         section:not([id*="results"]) p {
             color: rgba(255, 255, 255, 0.8) !important;
         }
+        
+        /* Creator logo styling */
+        .creator-logo {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .creator-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+        }
+        
+        .creator-logo-fallback {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .creator-logo-fallback:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+        }
     </style>
 </head>
 <body>
@@ -947,8 +966,15 @@
                         <div class="col-md-4">
                             <div class="glass-card p-3">
                                 <div class="text-center">
-                                    <div class="mx-auto bg-primary rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                                        <i class="fas fa-user fa-2x text-white"></i>
+                                    <div class="mx-auto mb-3" style="width: 80px; height: 80px; position: relative;">
+                                        <img src="{{ url_for('static', filename='images/logo.png') }}" 
+                                             alt="Creator Logo" 
+                                             class="creator-logo"
+                                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);"
+                                             onerror="this.src='{{ url_for('static', filename='images/logo.svg') }}'; if(this.src.includes('logo.svg') && this.naturalWidth === 0) { this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
+                                        <div class="creator-logo-fallback bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; display: none; border: 3px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
+                                            <i class="fas fa-user fa-2x text-white"></i>
+                                        </div>
                                     </div>
                                     <h5 class="mb-1">Creator</h5>
                                     <p class="mb-0"><strong>Anthony Frederick</strong></p>
